@@ -34,3 +34,20 @@ TUN
 
 1. Broadcast-трафик обычно не передаётся;
 2. Нельзя использовать мосты.
+
+
+# 2. Поднять RAS на базе OpenVPN с клиентскими сертификатами, подключиться с локальной машины на виртуалку. 
+Во вложении vagrantfile со скриптом.
+
+1. На хостовой машине нужно установить openvpn ```yum install install openvpn easy-rsa -y```
+2. В ```/etc/openvpn``` нужно создать папку client и скопировать сертификаты с сервера:
+```
+vagrant ssh -c 'cat /opt/ca.crt' > /home/client/ca.crt
+vagrant ssh -c 'cat /opt/client.crt' > /home/client/client.crt
+vagrant ssh -c 'cat /opt/client.key' > /home/client/client.key
+vagrant ssh -c 'cat /opt/dh2048.pem' > /home/client/dh2048.pem
+cp c* /etc/openvpn/client/
+```
+
+3. После этого подключаемся к серверу ``` sudo openvpn --config ~/client.conf``` и проверяем.  
+Скрины с результатом во вложении.
